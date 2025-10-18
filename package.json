@@ -1,0 +1,22 @@
+{
+  "name": "user-back",
+  "version": "1.0.0",
+  "description": "A simple system where users can join to save their information, and then view, update or delete that information",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kinmax/user-back.git"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "Kin Max Gusmao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kinmax/user-back/issues"
+  },
+  "homepage": "https://github.com/kinmax/user-back#readme"
+}
