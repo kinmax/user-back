@@ -1,10 +1,18 @@
+require('dotenv').config({ path: './config/.env' }); // Load environment variables from config folder
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./src/routes/userRoutes');
 const healthRoute = require('./src/routes/healthRoute');
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://userBackOwner:P%40ssw0rd@127.0.0.1:27017/user-back?authSource=user-back');
+
+// Encode credentials to handle special characters
+const mongoUser = encodeURIComponent(process.env.MONGODB_USER);
+const mongoPassword = encodeURIComponent(process.env.MONGODB_PASSWORD);
+const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/${process.env.MONGODB_DATABASE}?authSource=${process.env.MONGODB_DATABASE}`;
+
+mongoose.connect(mongoURI);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

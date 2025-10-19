@@ -1,9 +1,11 @@
 const User = require('../models/user');
+const { userPresenter } = require('../presenters/userPresenter');
+const bcrypt = require('bcrypt');
 
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find({});
-        res.json(users);
+        res.json(users.map(userPresenter));
     } catch (err) {
         res.status(500).json({ error: 'Internal server error', details: err.message });
     }
@@ -16,7 +18,7 @@ const getUserById = async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.json(user);
+        res.json(userPresenter(user));
     } catch (err) {
         console.error(`Error fetching user ${req.params.id}:`, err);
         res.status(500).json({ error: 'Internal server error', details: err.message });
@@ -27,6 +29,9 @@ const createUser = async (req, res) => {
     try {
         const { name, email, birthDate, city, state, country, password } = req.body;
 
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
         const newUser = new User({
             name,
             email,
@@ -34,7 +39,7 @@ const createUser = async (req, res) => {
             city,
             state,
             country,
-            password
+            hashedPassword
         });
         const { v4: uuidv4 } = require('uuid');
         newUser.userId = uuidv4();
@@ -65,7 +70,7 @@ const updateUserById = async (req, res) => {
         if (!updatedUser) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.json({ message: 'User updated successfully!', user: updatedUser });
+        res.json({ message: 'User updated successfully!', user: userPresenter(updatedUser) });
     } catch (error) {
         console.error(`Error updating user ${req.params.id}:`, error);
         res.status(500).json({ error: 'Internal server error', details: error.message });
