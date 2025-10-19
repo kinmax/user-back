@@ -18,5 +18,13 @@
   "bugs": {
     "url": "https://github.com/kinmax/user-back/issues"
   },
-  "homepage": "https://github.com/kinmax/user-back#readme"
+  "homepage": "https://github.com/kinmax/user-back#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.1",
+    "uuid": "^13.0.0"
+  }
 }
