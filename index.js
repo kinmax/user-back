@@ -1,5 +1,6 @@
 require('dotenv').config({ path: './config/.env' }); // Load environment variables from config folder
 
+const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./src/routes/userRoutes');
@@ -24,6 +25,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+
+app.use(cors());
+
 app.use('/user', userRoutes);
 app.use('/health', healthRoute);
 

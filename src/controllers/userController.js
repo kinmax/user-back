@@ -45,7 +45,7 @@ const createUser = async (req, res) => {
         newUser.userId = uuidv4();
 
         await newUser.save();
-        res.status(201).json({ message: 'User created successfully!' });
+        res.status(201).json(userPresenter(newUser));
     } catch (error) {
         console.error('Error creating user:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -62,15 +62,15 @@ const updateUserById = async (req, res) => {
             return res.status(400).json({ error: 'No fields to update' });
         }
 
-        if (updateData.email || updateData.userId) {
-            return res.status(400).json({ error: 'Email and userId cannot be updated' });
+        if (updateData.userId) {
+            return res.status(400).json({ error: 'userId cannot be updated' });
         }
 
         const updatedUser = await User.findOneAndUpdate({ userId }, updateData, { new: true });
         if (!updatedUser) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.json({ message: 'User updated successfully!', user: userPresenter(updatedUser) });
+        res.json(userPresenter(updatedUser));
     } catch (error) {
         console.error(`Error updating user ${req.params.id}:`, error);
         res.status(500).json({ error: 'Internal server error', details: error.message });
